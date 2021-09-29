@@ -92,8 +92,7 @@ class MainScreen(Screen):
     staircaseSpeedText = '0'
     rampSpeed = INIT_RAMP_SPEED
     staircaseSpeed = 40
-    s0 = stepper(port=0, micro_steps=32, hold_current=20, run_current=20, accel_current=20, deaccel_current=20,
-                 steps_per_unit=200, speed=3)
+
 
 
     def __init__(self, **kwargs):
@@ -125,14 +124,28 @@ class MainScreen(Screen):
     def gate_switch(self):
 
         Thread(target=self.toggleGate).start()
-
+    staircase = ObjectProperty(DPEAButton)
     def toggleStaircase(self):
-        print("Turn on and off staircase here")
+        if self.ids.staircase.text == "Staircase On":
+            cyprus.set_pwm_values(1, period_value=100000, compare_value=50000
+                                  , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+            self.ids.staircase.text = "Staircase Off"
+
+        elif self.ids.staircase.text == "Staircase Off":
+            cyprus.set_pwm_values(1, period_value=100000, compare_value=0
+                                  , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+            self.ids.staircase.text = "Staircase On"
+            
+
+
+    def stairs(self):
+        Thread(target=self.toggleStaircase()).start()
 
     def toggleRamp(self):
-        self.s0.start_relative_move(27)
-        sleep(3)
-        self.s0.go_until_press(0, -50)
+        self.s0.start_relative_move(28)
+        while self.s0.isBusy():
+            sleep(.3)
+        self.s0.go_until_press(0, 64000)
         sleep(3)
 
     def ramp_switch(self):
@@ -150,6 +163,8 @@ class MainScreen(Screen):
     def initialize(self):
         cyprus.initialize()
         cyprus.setup_servo(2)
+        self.s0 = stepper(port=0, micro_steps=32, hold_current=20, run_current=20, accel_current=20, deaccel_current=20,
+                     steps_per_unit=200, speed=3)
 
     def resetColors(self):
         self.ids.gate.color = YELLOW

@@ -3,6 +3,7 @@
     FloatLayout:
         size_hint: None, None
         gate: gate
+        staircase: staircase
 
 	##################
 	##### BUTTONS ####
@@ -69,7 +70,7 @@
             background_normal: ''
             size_hint: None,None
             size: 300,100
-            on_press: root.toggleStaircase()
+            on_press: root.stairs()
             on_release: root.resetColors()
 
 	##################
