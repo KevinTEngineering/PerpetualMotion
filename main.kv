@@ -2,6 +2,7 @@
     name: 'main'
     FloatLayout:
         size_hint: None, None
+        gate: gate
 
 	##################
 	##### BUTTONS ####
@@ -42,7 +43,7 @@
             background_normal: ''
             size_hint: None,None
             size: 300,100
-            on_press: root.toggleGate()
+            on_press: root.gate_switch()
             on_release: root.resetColors()
 
         DPEAButton:
@@ -55,7 +56,7 @@
             background_normal: ''
             size_hint: None,None
             size: 300,100
-            on_press: root.toggleRamp()
+            on_press: root.ramp_switch()
             on_release: root.resetColors()
 
         DPEAButton:
