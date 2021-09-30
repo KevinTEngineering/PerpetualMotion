@@ -113,7 +113,6 @@ class MainScreen(Screen):
             self.ids.gate.text = "Open Gate"
             sleep(1)
 
-
     def gate_switch(self):
 
         Thread(target=self.toggleGate).start()
@@ -129,13 +128,12 @@ class MainScreen(Screen):
                                   , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             self.ids.staircase.text = "Staircase On"
 
-
-
     def stairs(self):
         Thread(target=self.toggleStaircase()).start()
 
+    ramp_speed = 0
     def toggleRamp(self):
-        self.s0.start_relative_move(28)
+        self.s0.start_relative_move(self.ramp_speed)
         while self.s0.isBusy():
             sleep(.3)
         self.s0.go_until_press(0, 64000)
@@ -155,19 +153,21 @@ class MainScreen(Screen):
         sleep(1.2)
         cyprus.set_pwm_values(1, period_value=100000, compare_value=0
                               , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+        Thread(target=self.motor_two()).start()
 
+    def motor_two(self):
+        print("MOVE THE RAMP")
         self.s0.start_relative_move(28)
         while self.s0.isBusy():
             sleep(.3)
         self.s0.go_until_press(0, 64000)
 
 # if cyprus.read_gpio() & 0b0010:
-
     def ru(self):
         Thread(target=self.auto()).start()
 
     def setRampSpeed(self, speed):
-        pass
+        self.ramp_speed = speed
 
     def setStaircaseSpeed(self, speed):
         cyprus.set_pwm_values(1, period_value=100000, compare_value=speed
