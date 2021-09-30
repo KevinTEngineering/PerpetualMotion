@@ -117,6 +117,7 @@ class MainScreen(Screen):
 
         Thread(target=self.toggleGate).start()
     staircase = ObjectProperty(DPEAButton)
+    # WHY ARE YOU SO RANDOM
     def toggleStaircase(self):
         if self.ids.staircase.text == "Staircase On":
             cyprus.set_pwm_values(1, period_value=100000, compare_value=100000
@@ -133,7 +134,7 @@ class MainScreen(Screen):
 
     ramp_speed = 0
     def toggleRamp(self):
-        self.s0.start_relative_move(self.ramp_speed)
+        self.s0.start_relative_move(28)
         while self.s0.isBusy():
             sleep(.3)
         self.s0.go_until_press(0, 64000)
@@ -146,7 +147,7 @@ class MainScreen(Screen):
         cyprus.set_servo_position(2, 0)
         cyprus.set_pwm_values(1, period_value=100000, compare_value=100000
                               , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
-        sleep(6)
+        sleep(8)
         cyprus.set_servo_position(2, .5)
         sleep(0.7)
         cyprus.set_servo_position(2, 0)
