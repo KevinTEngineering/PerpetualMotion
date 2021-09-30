@@ -30,7 +30,7 @@
             background_normal: ''
             size_hint: None,None
             size: 300,100
-            on_press: root.auto()
+            on_press: root.ru()
             on_release: root.resetColors()
 
         # Turn on/off gate
@@ -81,7 +81,7 @@
             id: rampSpeed
             orientation: 'horizontal'
             min: 10
-            max: 200
+            max: 30
             value: root.rampSpeed
             step: 1
             center_x: root.width * 0.6
@@ -92,8 +92,8 @@
         Slider:
             id: staircaseSpeed
             orientation: 'horizontal'
-            min: 10
-            max: 50
+            min: 0
+            max: 100000
             value: root.staircaseSpeed
             step: 1
             center_x: root.width * 0.6

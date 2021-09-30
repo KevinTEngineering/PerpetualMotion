@@ -100,17 +100,10 @@ class MainScreen(Screen):
         self.initialize()
 
     gate_position = 0
+    speed = 0
     gate = ObjectProperty(DPEAButton)
     def toggleGate(self):
-        # cyprus.set_servo_position(2, 0.0)
-        # sleep(1)
-        # cyprus.set_servo_position(2, 0.5)
-        # sleep(1)
-        # cyprus.set_servo_position(2, 1)
-        # sleep(1)
-        # cyprus.set_servo_position(2, 0.5)
-        # sleep(1)
-        # cyprus.set_servo_position(2, 0)
+
         if self.ids.gate.text == "Open Gate":
             cyprus.set_servo_position(2, .5)
             self.ids.gate.text = "Close Gate"
@@ -127,7 +120,7 @@ class MainScreen(Screen):
     staircase = ObjectProperty(DPEAButton)
     def toggleStaircase(self):
         if self.ids.staircase.text == "Staircase On":
-            cyprus.set_pwm_values(1, period_value=100000, compare_value=50000
+            cyprus.set_pwm_values(1, period_value=100000, compare_value=100000
                                   , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             self.ids.staircase.text = "Staircase Off"
 
@@ -135,7 +128,7 @@ class MainScreen(Screen):
             cyprus.set_pwm_values(1, period_value=100000, compare_value=0
                                   , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             self.ids.staircase.text = "Staircase On"
-            
+
 
 
     def stairs(self):
@@ -152,13 +145,33 @@ class MainScreen(Screen):
         Thread(target=self.toggleRamp()).start()
 
     def auto(self):
-        print("Run through one cycle of the perpetual motion machine")
+        cyprus.set_servo_position(2, 0)
+        cyprus.set_pwm_values(1, period_value=100000, compare_value=100000
+                              , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+        sleep(6)
+        cyprus.set_servo_position(2, .5)
+        sleep(0.7)
+        cyprus.set_servo_position(2, 0)
+        sleep(1.2)
+        cyprus.set_pwm_values(1, period_value=100000, compare_value=0
+                              , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+
+        self.s0.start_relative_move(28)
+        while self.s0.isBusy():
+            sleep(.3)
+        self.s0.go_until_press(0, 64000)
+
+# if cyprus.read_gpio() & 0b0010:
+
+    def ru(self):
+        Thread(target=self.auto()).start()
 
     def setRampSpeed(self, speed):
-        print("Set the ramp speed and update slider text")
+        pass
 
     def setStaircaseSpeed(self, speed):
-        print("Set the staircase speed and update slider text")
+        cyprus.set_pwm_values(1, period_value=100000, compare_value=speed
+                              , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
 
     def initialize(self):
         cyprus.initialize()
