@@ -61,7 +61,8 @@ class MyApp(App):
         return sm
 
 
-Builder.load_file('main.kv')Window.clearcolor = (.1, .1, .1, 1)  # (WHITE)
+Builder.load_file('main.kv')
+Window.clearcolor = (.1, .1, .1, 1)  # (WHITE)
 
 cyprus.open_spi()
 
@@ -119,7 +120,7 @@ class MainScreen(Screen):
     # WHY ARE YOU SO RANDOM
     def toggleStaircase(self):
         if self.ids.staircase.text == "Staircase On":
-            cyprus.set_pwm_values(1, period_value=600, compare_value=100000
+            cyprus.set_pwm_values(1, period_value=100000, compare_value=100000
                                   , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             self.ids.staircase.text = "Staircase Off"
 
