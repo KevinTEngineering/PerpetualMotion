@@ -61,8 +61,7 @@ class MyApp(App):
         return sm
 
 
-Builder.load_file('main.kv')
-Window.clearcolor = (.1, .1, .1, 1)  # (WHITE)
+Builder.load_file('main.kv')Window.clearcolor = (.1, .1, .1, 1)  # (WHITE)
 
 cyprus.open_spi()
 
@@ -120,7 +119,7 @@ class MainScreen(Screen):
     # WHY ARE YOU SO RANDOM
     def toggleStaircase(self):
         if self.ids.staircase.text == "Staircase On":
-            cyprus.set_pwm_values(1, period_value=100000, compare_value=100000
+            cyprus.set_pwm_values(1, period_value=600, compare_value=100000
                                   , compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             self.ids.staircase.text = "Staircase Off"
 
@@ -134,6 +133,7 @@ class MainScreen(Screen):
 
     ramp_speed = 0
     def toggleRamp(self):
+
         self.s0.start_relative_move(28)
         while self.s0.isBusy():
             sleep(.3)
@@ -158,17 +158,19 @@ class MainScreen(Screen):
 
     def motor_two(self):
         print("MOVE THE RAMP")
+        self.s0 = stepper(port=0, micro_steps=32, hold_current=20, run_current=20, accel_current=20, deaccel_current=20,
+                          steps_per_unit=200, speed=3)
         self.s0.start_relative_move(28)
         while self.s0.isBusy():
             sleep(.3)
         self.s0.go_until_press(0, 64000)
 
-# if cyprus.read_gpio() & 0b0010:
+# HH
     def ru(self):
         Thread(target=self.auto()).start()
 
     def setRampSpeed(self, speed):
-        self.ramp_speed = speed
+        pass
 
     def setStaircaseSpeed(self, speed):
         cyprus.set_pwm_values(1, period_value=100000, compare_value=speed

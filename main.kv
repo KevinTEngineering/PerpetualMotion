@@ -73,6 +73,19 @@
             on_press: root.stairs()
             on_release: root.resetColors()
 
+#        DPEAButton:
+#            id: crash
+#            color: 0.180, 0.188, 0.980, 1
+#            text: "Don't Crash"
+#            center_x: root.width * 0.75
+#            y: root.height * 0.35
+#            background_color: 0, 0, 0, 0
+#            background_normal: ''
+#            size_hint: None,None
+#            size: 300,100
+#            on_press: root.stairs()
+
+
 	##################
 	##### SLIDERS ####
         ##################
@@ -81,7 +94,7 @@
             id: rampSpeed
             orientation: 'horizontal'
             min: 10
-            max: 28
+            max: 200
             value: root.rampSpeed
             step: 1
             center_x: root.width * 0.6
